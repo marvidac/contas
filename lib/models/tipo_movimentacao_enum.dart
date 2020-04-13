@@ -1,0 +1,4 @@
+enum TipoMovimentacao {
+  C,
+  D
+}
