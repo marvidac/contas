@@ -23,7 +23,6 @@ class ItemList extends StatelessWidget {
           title: TextDefault(this.title),
           subtitle: TextDefault(this.subtitle + (this.complemento!=null ? "          ($complemento)" : "")),
           trailing: TextDefault("R\$ $value"),
-          onTap: () => _onClickItemList(this.title),
         ),
       ),
     );

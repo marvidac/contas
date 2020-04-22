@@ -1,3 +1,6 @@
+import 'package:contasv1/dao/movimentacao_dao.dart';
+import 'package:contasv1/models/movimentacao.dart';
+import 'package:contasv1/models/tipo_movimentacao_enum.dart';
 import 'package:contasv1/widgets/date_time_field_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,15 +8,23 @@ import 'package:intl/intl.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class MovimentacaoForm extends StatefulWidget {
+
+  final Movimentacao movimentacao;
+
+  MovimentacaoForm({this.movimentacao})  ;
+
   @override
   _MovimentacaoFormState createState() => _MovimentacaoFormState();
 }
 
 class _MovimentacaoFormState extends State<MovimentacaoForm> {
+
+  Movimentacao get movimentacao => widget.movimentacao;
+
   final _formKey = GlobalKey<FormState>();
   final _tData = TextEditingController();
   final _tReferencia = TextEditingController();
-  final _tMesAno = TextEditingController();
+  
   final _tDescricao = TextEditingController();
   final _tValor = MoneyMaskedTextController(
       leftSymbol: 'R\$ ', decimalSeparator: ',', thousandSeparator: '.');
@@ -22,11 +33,13 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
   final _tFixa = TextEditingController();
   final _tSouPagador = TextEditingController();
   final _tTipo = TextEditingController();
-  final _tPagador = TextEditingController();
   final _tPago = TextEditingController();
   final _tObservacao = TextEditingController();
-  bool _parceladoValue = false;
-  bool _fixaValue, _souPagador, _pago = false;
+  bool _souPagador = false;
+  bool _fixa = false;
+  bool _parcelado = false;
+  bool _pago = false;
+
   String _tipo;
 
   @override
@@ -70,12 +83,12 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                           ),
                         ),
                         Checkbox(
-                          value: _parceladoValue,
+                          value: this._parcelado,
                           onChanged: (bool newValor) => {
                             setState(
                                   () {
-                                _parceladoValue = newValor;
-                                this._tParcelado.text = (_parceladoValue) ? 'S' : 'N';
+                                this._parcelado = newValor;
+                                 this._tParcelado.text = (this._parcelado) ? 'S' : 'N';
                               },
                             )
                           },
@@ -98,12 +111,12 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                           ),
                         ),
                         Checkbox(
-                          value: _fixaValue,
+                          value: _fixa,
                           onChanged: (bool newValor) => {
                             setState(
                                   () {
-                                _fixaValue = newValor;
-                                this._tFixa.text = (_fixaValue) ? 'S' : 'N';
+                                this._fixa = newValor;
+                                this._tFixa.text = (this._fixa) ? 'S' : 'N';
                               },
                             )
                           },
@@ -127,6 +140,7 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                           onChanged: (String newValue) {
                             setState(() {
                               this._tipo = newValue;
+                              this._tTipo.text = this._tipo;
                             });
                           },
                           items: <String>['Pagamento', 'Recebimento']
@@ -149,12 +163,12 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                           ),
                         ),
                         Checkbox(
-                          value: _souPagador,
+                          value: this._souPagador,
                           onChanged: (bool newValor) => {
                             setState(
                                   () {
-                                _souPagador = newValor;
-                                this._tSouPagador.text = (_souPagador) ? 'S' : 'N';
+                                this._souPagador = newValor;
+                                this._tSouPagador.text = (this._souPagador) ? 'S' : 'N';
                               },
                             )
                           },
@@ -163,7 +177,7 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                     ),
                     TextField(
                       decoration: InputDecoration(labelText: "Nome Pagador"),
-                      controller: this._tPagador,
+                      controller: this._tSouPagador,
                     ),
                     Row(
                       children: <Widget>[
@@ -179,8 +193,8 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                           onChanged: (bool newValor) => {
                             setState(
                                   () {
-                                _pago = newValor;
-                                this._tPago.text = (_pago) ? 'S' : 'N';
+                                this._pago = newValor;
+                                this._tPago.text = (this._pago) ? 'S' : 'N';
                               },
                             )
                           },
@@ -200,7 +214,7 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
                   RaisedButton(
                     child: Text("Salvar"),
                     onPressed: () {
-
+                      _salvarMovimentacao();
                     },
                   ),
                   Container(padding: EdgeInsets.all(10),),
@@ -218,5 +232,26 @@ class _MovimentacaoFormState extends State<MovimentacaoForm> {
         ),
       ),
     );
+  }
+
+  void _salvarMovimentacao() {
+    MovimentacaoDao movDao;
+    
+    var mov = movimentacao ?? Movimentacao();
+    mov.data = this._tData.text;
+    mov.referencia = this._tReferencia.text;
+    mov.descricao = this._tDescricao.text;
+    mov.valor = this._tValor.numberValue;
+    mov.parcelado = this._tParcelado.text;
+    mov.qtde_parcelas = int.parse(this._tQtdeParcelas.text);
+    mov.fixa = this._tFixa.text;
+    mov.tipo = this._tTipo.text=='C' ? TipoMovimentacao.C : TipoMovimentacao.D;
+    mov.sou_pagador = this._tSouPagador.text;
+    mov.nome_pagador = this._tSouPagador.text;
+    mov.pago = this._tPago.text;
+    mov.observacao = this._tObservacao.text;
+
+    movDao.save(mov);
+
   }
 }

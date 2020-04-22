@@ -57,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: TextDefault("Movimentação"),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () => {
+                Navigator.pop(context),
                 Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) {
                     return MovimentacaoForm();
