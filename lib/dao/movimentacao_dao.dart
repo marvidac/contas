@@ -1,5 +1,5 @@
-import 'package:contasv1/dao/generic_dao.dart';
-import 'package:contasv1/models/movimentacao.dart';
+import 'package:contasv2/dao/generic_dao.dart';
+import 'package:contasv2/models/movimentacao.dart';
 
 class MovimentacaoDao extends GenericDao<Movimentacao> {
   @override

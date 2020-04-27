@@ -1,5 +1,5 @@
-import 'package:contasv1/sql/db_helper.dart';
-import 'package:contasv1/sql/entity.dart';
+import 'package:contasv2/sql/db_helper.dart';
+import 'package:contasv2/sql/entity.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class GenericDao<T extends Entity> {

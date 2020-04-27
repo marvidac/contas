@@ -1,5 +1,5 @@
-import 'package:contasv1/models/tipo_movimentacao_enum.dart';
-import 'package:contasv1/sql/entity.dart';
+import 'package:contasv2/models/tipo_movimentacao_enum.dart';
+import 'package:contasv2/sql/entity.dart';
 import 'dart:convert' as convert;
 
 class Movimentacao extends Entity {
@@ -38,18 +38,18 @@ class Movimentacao extends Entity {
 
   Movimentacao.fromMap(Map<String, dynamic> map) {
     id = map['id'];
-    id = map['data'];
-    id = map['referencia'];
-    id = map['descricao'];
-    id = map['valor'];
-    id = map['parcelado'];
-    id = map['qtde_parcelas'];
-    id = map['fixa'];
-    id = map['tipo'];
-    id = map['sou_pagador'];
-    id = map['nome_pagador'];
-    id = map['pago'];
-    id = map['observacao'];
+    data = map['data'];
+    referencia = map['referencia'];
+    descricao = map['descricao'];
+    valor = map['valor'];
+    parcelado = map['parcelado'];
+    qtde_parcelas = map['qtde_parcelas'];
+    fixa = map['fixa'];
+    tipo = map['tipo'];
+    sou_pagador = map['sou_pagador'];
+    nome_pagador = map['nome_pagador'];
+    pago = map['pago'];
+    observacao = map['observacao'];
   }
   @override
   Map<String, dynamic> toMap() {

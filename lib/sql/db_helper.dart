@@ -31,7 +31,7 @@ class DatabaseHelper {
 
   void _onCreate(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE movimentacao(id INTEGER AUTOINCREMENT PRIMARY KEY, data TEXT, referencia TEXT, descricao TEXT, valor REAL, parcelado TEXT'
+        'CREATE TABLE movimentacao(id INTEGER PRIMARY KEY AUTOINCREMENT, data TEXT, referencia TEXT, descricao TEXT, valor REAL, parcelado TEXT'
         ', qtde_parcelas INTEGER, fixa TEXT, tipo TEXT, sou_pagador TEXT, nome_pagador TEXT, pago TEXT, observacao TEXT)');
   }
 
